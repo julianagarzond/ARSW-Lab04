@@ -13,10 +13,7 @@ import edu.eci.arsw.blueprints.services.BlueprintsServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/blueprints")
@@ -37,7 +34,34 @@ public class BlueprintAPIController {
             return new ResponseEntity<Collection<Blueprint>>(bps.getAllBlueprints(), HttpStatus.ACCEPTED);
         } catch (BlueprintNotFoundException ex) {
             Logger.getLogger(BlueprintNotFoundException.class.getName()).log(Level.SEVERE, null, ex);
-            return new ResponseEntity<Collection<Blueprint>>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Collection<Blueprint>>(new HashSet<>(), HttpStatus.NOT_FOUND);
         }
     }
+
+    @RequestMapping(method = RequestMethod.GET, path = "{author}")
+
+    public ResponseEntity<Collection<Blueprint>> getAuthors(@PathVariable String author ) {
+
+        try {
+            //obtener datos que se enviarán a través del API
+            return new ResponseEntity<Collection<Blueprint>>(bps.getBlueprintsByAuthor(author), HttpStatus.ACCEPTED);
+        } catch (BlueprintNotFoundException ex) {
+            Logger.getLogger(BlueprintNotFoundException.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<Collection<Blueprint>>(new HashSet<>(),HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "{author}/{name}")
+
+    public ResponseEntity<Blueprint> getAuthors(@PathVariable String author, @PathVariable String name ) {
+
+        try {
+            //obtener datos que se enviarán a través del API
+            return new ResponseEntity<Blueprint>(bps.getBlueprint(author, name), HttpStatus.ACCEPTED);
+        } catch (BlueprintNotFoundException ex) {
+            Logger.getLogger(BlueprintNotFoundException.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<Blueprint>(new Blueprint() ,HttpStatus.NOT_FOUND);
+        }
+    }
+
 }
