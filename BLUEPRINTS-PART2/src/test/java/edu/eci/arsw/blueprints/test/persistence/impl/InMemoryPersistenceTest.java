@@ -117,7 +117,7 @@ public class InMemoryPersistenceTest {
         assertEquals(ibpp.getBlueprintByAuthor("john"),authorBlueprints);
     }
 
-    @Test
+    /*@Test
     public void redundancyFilterTest() throws BlueprintPersistenceException, BlueprintNotFoundException {
 
         InMemoryBlueprintPersistence ibpp=new InMemoryBlueprintPersistence();
@@ -155,5 +155,5 @@ public class InMemoryPersistenceTest {
             assertTrue(pts3.get(i).getY()== bp2.getPoints().get(i).getY());
         }
 
-    }
+    }*/
 }

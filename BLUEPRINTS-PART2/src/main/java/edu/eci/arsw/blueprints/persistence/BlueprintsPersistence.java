@@ -35,7 +35,7 @@ public interface BlueprintsPersistence {
 
     public Set<Blueprint> getBlueprintByAuthor(String auth);
 
-    public Set<Blueprint> getAllBlueprints();
+    public Set<Blueprint> getAllBlueprints() throws BlueprintNotFoundException;
 
     public void updateBlueprint(Blueprint bp,String auth,String name) throws BlueprintPersistenceException;
 }
