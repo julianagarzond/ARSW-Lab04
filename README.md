@@ -21,6 +21,8 @@ The BlueprintsRESTAPI component will work in a concurrent environment. That is, 
   - What race conditions could occur? 
   - What are the respective critical regions? 
 Set the code to suppress race conditions. Keep in mind that simply synchronizing access to persistence/query operations will significantly degrade the API performance, so you should look for alternative strategies.
+
+
 Write your analysis and the solution applied to the file README.txt
 
 
