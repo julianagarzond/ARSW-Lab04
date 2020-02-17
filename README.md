@@ -37,6 +37,10 @@ public class RedundancyFilter implements BlueprintFilter {
 
 
   ``` 
+
+ 
+- Modify the persistence bean InMemoryBlueprintPersistence so that by default it is initialized with at least three other planes, and with two associated with the same author.
+
   ``` java
   public InMemoryBlueprintPersistence() {
         //load stub data
@@ -55,8 +59,6 @@ public class RedundancyFilter implements BlueprintFilter {
         blueprints.put(new Tuple<>(bp3.getAuthor(),bp3.getName()), bp3);
     } 
   ```
- 
-- Modify the persistence bean InMemoryBlueprintPersistence so that by default it is initialized with at least three other planes, and with two associated with the same author.
 - Configure your application to offer the resource /blueprints, so that when a GET request is made, return in JSON format - all the drawings. For this:
      - Modify the BlueprintAPIController class taking into account the following example of a REST controller made with SpringMVC/SpringBoot
      - Have the BlueprintServices type bean injected into this class (which, in turn, will be injected with its persistence and point filtering dependencies).
