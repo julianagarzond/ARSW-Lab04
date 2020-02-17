@@ -87,14 +87,35 @@ public class BlueprintsAPIApplication {
 
 ## PART II 
 - Add the handling of POST requests (creation of new plans), so that an http client can register a new order by making a POST request to the resource planes, and sending as content of the request all the detail of said resource through a JSON document. For this, consider the following example, which considers - by consistency with the HTTP protocol - the handling of HTTP status codes (in case of success or error):
+ ``` java 
+  @RequestMapping(method = RequestMethod.POST, path = "/createblueprints")
+    public ResponseEntity<?> postNewBliprint(@RequestBody Blueprint bp){
+        try {
+            bps.addNewBlueprint(bp);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (BlueprintPersistenceException ex) {
+            Logger.getLogger(BlueprintPersistenceException.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>("Error adding new BluePrint",HttpStatus.FORBIDDEN);
+        }
+    }
+    
+   ```
+
 - To test that the planes resource correctly accepts and interprets POST requests, use the Unix curl command. This command has as a parameter the type of content handled (in this case JSON), and the message body that will go with the request, which in this case must be a JSON document equivalent to the Client class (where instead of {JSON Object}, a JSON object corresponding to a new order will be used.
+![Capture](https://user-images.githubusercontent.com/43153078/74686254-f082ad80-519e-11ea-9346-19887906e147.png)
+![Capture2 (1)](https://user-images.githubusercontent.com/43153078/74686415-76065d80-519f-11ea-9fcc-af118a377a5e.png)
 
 ## PART III
 
 The BlueprintsRESTAPI component will work in a concurrent environment. That is, it will attend multiple requests simultaneously (with the stack of applications used, these requests will be attended by default across multiple threads). Given the above, you should review your API (once it works), and identify:
   - What race conditions could occur? 
-  - What are the respective critical regions? 
+      The condition race occurs when there are many petitions from the users , for example someone could make an update when other user could consult a resource at the same time  
+  - What are the respective critical regions?
+  The critical region is the HashMap blueprints where all the blueprints are stored
 Set the code to suppress race conditions. Keep in mind that simply synchronizing access to persistence/query operations will significantly degrade the API performance, so you should look for alternative strategies.
+ ``` java
+private final ConcurrentMap<Tuple<String,String>,Blueprint> blueprints = new ConcurrentHashMap<>();
+  ```
 
 
 Write your analysis and the solution applied to the file README.txt
